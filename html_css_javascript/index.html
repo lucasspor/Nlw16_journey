@@ -14,14 +14,39 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
   <!--Script-->
   <script src="script.js" defer></script>
+  <!--DaysJs-->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/pt-br.js"></script>
+  <script>dayjs.locale('pt-br')</script>
   <title>Document</title>
 </head>
 
 <body>
-  <h1>Atividades</h1>
 
-  <section>
-  </section>
+  <main>
+
+    <form onsubmit="salvarAtividade()">
+      <div>
+        <input type="text" placeholder="Qual a atividade?" name="atividade">
+      </div>
+      <div>
+        <select name="dia">
+          <option>01 de fevereiro</option>
+        </select>
+      </div>
+
+      <div>
+        <select name="hora">
+          <option>10:30</option>
+        </select>
+      </div>
+
+      <button>Salvar atividade</button>
+    </form>
+
+    <h1>Atividades</h1>
+    <section> </section>
+  </main>
 </body>
 
 </html>
