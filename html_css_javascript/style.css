@@ -1,0 +1,17 @@
+html{
+  background-color: #090909;
+  color: #FAFAFA;
+}
+:root{
+  font-family: 'inter', sans-serif;
+  font-size: 62.5%;
+}
+
+body{
+  font-size: 1.6rem;
+}
+
+h1{
+  font-size: 3.2rem;
+  font-weight: bold; 
+}
