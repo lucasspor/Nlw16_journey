@@ -46,10 +46,16 @@ const criarItemDeAtividade = (atividade) => {
 
   const formatar = formatador(atividade.data);
 
-  return `<div>
+  return `<div class="card-bg">
       ${input}
-      <span>${atividade.nome}</span>
-      <time>${formatar.dia.semana.longo}, dia ${formatar.dia.numerico} de ${formatar.mes} às ${formatar.horas}</time>
+      <div><img src="./assets/circle-check.svg" alt="Checked" class="active"/>
+      <img src="./assets/circle-dashed.svg" alt="unchecked" class="inactive"/><span>${atividade.nome}</span></div>
+      <time class="short">
+      ${formatar.dia.semana.curto}
+      ${formatar.dia.numerico} <br/>
+      ${formatar.horas}
+      </time>
+      <time class="full">${formatar.dia.semana.longo}, dia ${formatar.dia.numerico} de ${formatar.mes} às ${formatar.horas}</time>
     </div>`
 }
 
@@ -68,10 +74,10 @@ const atualizarListaDeAtividades = () => {
 }
 atualizarListaDeAtividades()
 
-const salvarAtividade = (event) =>{
+const salvarAtividade = (event) => {
   event.preventDefault()
   const dadosDoFormulario = new FormData(event.target)
-  
+
 
   const nome = dadosDoFormulario.get('atividade')
   const dia = dadosDoFormulario.get('dia')
@@ -88,7 +94,7 @@ const salvarAtividade = (event) =>{
     return atividade.data == novaAtividade.data
   })
 
-  if(atividadeExiste){
+  if (atividadeExiste) {
     alert('Dia/hora não disponivel')
   }
 
@@ -107,7 +113,7 @@ const criarDiasSelecao = () => {
 
   let diasSelecao = '';
 
-  for(let dia of dias){
+  for (let dia of dias) {
     const formatar = formatador(dia);
     const diaFormatado = `
       ${formatar.dia.numerico} de ${formatar.mes}
@@ -123,10 +129,10 @@ criarDiasSelecao();
 const criarHorasSelecao = () => {
   let horasDisponiveis = '';
 
-  for(let i = 5; i <= 23; i++){
+  for (let i = 5; i <= 23; i++) {
     const hora = String(i).padStart(2, '0')
     horasDisponiveis += `<option value="${hora}:00">${hora}:00</option>`
-    if(i != 23){
+    if (i != 23) {
       horasDisponiveis += `<option value="${hora}:30">${hora}:30</option>`
     }
   }
@@ -138,12 +144,12 @@ criarHorasSelecao();
 
 const concluirAtividade = (event) => {
   const input = event.target
-  const dataDesteInput = input.value 
+  const dataDesteInput = input.value
 
   const atividade = atividades.find(atividade => {
     return atividade.data == dataDesteInput
   })
-  if(!atividade){
+  if (!atividade) {
     return
   }
 

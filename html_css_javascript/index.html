@@ -23,30 +23,41 @@
 
 <body>
 
-  <main>
-
+  <div id="app">
     <form onsubmit="salvarAtividade(event)">
-      <div>
-        <input type="text" placeholder="Qual a atividade?" name="atividade" required>
-      </div>
-      <div>
-        <select name="dia">
-          <option>01 de fevereiro</option>
-        </select>
+      <div id="place" class="card-bg">
+        <img src="assets/map-pin.svg" alt="Maps">
+        Praia Grande, SP
       </div>
 
-      <div>
-        <select name="hora">
-          <option>10:30</option>
-        </select>
+      <div class="fields">
+        <div class="field-wrapper">
+          <img src="assets/tag.svg" alt="tag"/>
+          <input type="text" placeholder="Qual a atividade?" name="atividade" required>
+        </div>
+        <div class="field-wrapper">
+          <img src="assets/calendar.svg" alt="tag"/>
+          <select name="dia">
+            <option>01 de fevereiro</option>
+          </select>
+        </div>
+
+        <div class="field-wrapper">
+          <img src="assets/clock.svg" alt="tag"/>
+          <select name="hora">
+            <option>10:30</option>
+          </select>
+        </div>
       </div>
 
       <button>Salvar atividade</button>
     </form>
+    <main>
 
-    <h1>Atividades</h1>
-    <section> </section>
-  </main>
+      <h1>Atividades</h1>
+      <section> </section>
+    </main>
+  </div>
 </body>
 
 </html>
