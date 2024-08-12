@@ -155,3 +155,39 @@ time.full {
   display: none;
 }
 
+@media (width > 1024px){
+  #app{
+    display: flex;
+    max-width: 96rem;
+    gap: 3.2rem;
+    
+    margin-top: 2rem;
+  }
+
+  main{
+    margin-top: 0;
+    flex: 1;
+  }
+
+  h1{
+    text-align: left;
+  }
+
+  time.full{
+    display: block;
+  }
+  
+  time.short{
+    display: none;
+  }
+}
+
+section .card-bg{
+  animation: appear .8s ease-out;
+}
+
+@keyframes appear{
+ from {
+  opacity: 0;
+ }
+}
