@@ -61,5 +61,16 @@ const atualizarListaDeAtividades = () => {
 }
 atualizarListaDeAtividades();
 
+const salvarAtividade = (event) =>{
+  event.prevendtDefault()
+}
+
+const criarDiasSelecao = () => {
+  const dias = [
+    
+  ]
+}
+
+criarDiasSelecao()
 
 
