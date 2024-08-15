@@ -6,16 +6,16 @@ interface DestinationAndDateStepProps{
   openGuestsInput: () => void
 }
 
-export function DestinationAndDateStep({isGuestsInputOpen, closeGuestsInput, openGuestsInput}: DestinationAndDateStepProps){
+export function DestinationAndDateStep({isGuestsInputOpen, closeGuestsInput,openGuestsInput}: DestinationAndDateStepProps){
   return (
     <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
     <div className='flex gap-2 items-center flex-1'>
       <MapPin className='size-5 text-zinc-400' />
       <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai" className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" />
     </div>
-    <div className='flex gap-2 items-center'>
+    <div className='flex gap-2 items-center '>
       <Calendar className='size-5 text-zinc-400' />
-      <input disabled={isGuestsInputOpen} type="text" placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 outline-none w-52" />
+      <input disabled={isGuestsInputOpen} type="text" placeholder="Quando?" className="bg-transparent text-lg placeholder-zinc-400 outline-none w-32" />
     </div>
 
     <div className='w-px h-6 bg-zinc-800'></div>

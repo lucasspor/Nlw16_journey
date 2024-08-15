@@ -5,3 +5,8 @@
 *{
   min-width: 0;
 }
+
+::-webkit-calendar-picker-indicator {
+  display: none;
+  overflow: hidden;
+}
