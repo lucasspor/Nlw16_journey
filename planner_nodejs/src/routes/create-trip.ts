@@ -62,21 +62,6 @@ export async function createTrip(app: FastifyInstance) {
 
     const mail = await getMailClient()
 
-    const message = await mail.sendMail({
-      from: {
-        name: 'Equipe plann.er',
-        address: 'oi@plann.er',
-      },
-      to: {
-        name: owner_name,
-        address: owner_email,
-      },
-      subject: '<h1>Testando Email</h1>',
-      html: '<p>teste do envio</p>',
-    })
-
-    console.log(nodemailer.getTestMessageUrl(message))
-
     return { tripId: trip.id }
   })
 } 
