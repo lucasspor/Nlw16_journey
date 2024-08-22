@@ -10,6 +10,9 @@ import { createLinks } from './routes/create-link';
 import { getLinks } from './routes/get-link';
 import { getParticipants } from './routes/get.participants';
 import { createInvites } from './routes/create-invite';
+import { updateTrip } from './routes/update-trip';
+import { getTripDetails } from './routes/get-trip-details';
+import { getParticipant } from './routes/get-participant';
 
 const app = fastify()
 
@@ -29,6 +32,9 @@ app.register(createLinks)
 app.register(getLinks)
 app.register(getParticipants)
 app.register(createInvites)
+app.register(updateTrip)
+app.register(getTripDetails)
+app.register(getParticipant)
 
 app.listen({port: 3333}).then(()=>{
   console.log("Server running")
