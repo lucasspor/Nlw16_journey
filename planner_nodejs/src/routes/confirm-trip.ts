@@ -5,6 +5,8 @@ import { z } from "zod";
 import { dayjs } from "../lib/dayjs";
 import { getMailClient } from "../lib/mail";
 import { prisma } from "../lib/prisma";
+import { ClientError } from "../errors/client-error";
+import { env } from "../env";
 
 export async function confirmTrip(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get('/trips/:tripId/confirm', {
@@ -30,11 +32,11 @@ export async function confirmTrip(app: FastifyInstance) {
     })
 
     if (!trip) {
-      throw new Error('Trip not found')
+      throw new ClientError('Trip not found')
     }
 
     if (trip.is_confirmed) {
-      return reply.redirect(`http://localhost:3000/trips${tripId}`)
+      return reply.redirect(`${env.WEB_BASE_URL}trips${tripId}`)
     }
 
     await prisma.trip.update({
@@ -60,12 +62,12 @@ export async function confirmTrip(app: FastifyInstance) {
           html: '<p>teste do envio</p>',
         })
         
-         const confirmationLink = `http://localhost:3333/participants/${participant.id}/confirm`
+         const confirmationLink = `${env.PORT}participants/${participant.id}/confirm`
 
         console.log(nodemailer.getTestMessageUrl(message))
       })
     ])
 
-    return reply.redirect(`http://localhost:3000/trips${tripId}`)
+    return reply.redirect(`${env.WEB_BASE_URL}trips${tripId}`)
   })
 } 

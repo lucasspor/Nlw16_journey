@@ -23,7 +23,7 @@ export async function getParticipant(app: FastifyInstance) {
       })
 
     if (!participant) {
-      throw new Error("'Participant doesn't exist")
+      throw new Error("Participant doesn't exist")
     }
 
     return { participant }
