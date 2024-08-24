@@ -1,4 +1,4 @@
-import { Clock, Mail, Tag, X } from "lucide-react";
+import { Calendar, Clock, Tag, X } from "lucide-react";
 import { Button } from "../../components/button";
 
 interface CreateActivityModalProps {
@@ -25,7 +25,7 @@ export function CreateActivityModal({ closeCreateActivityModal }: CreateActivity
             </div>
             <div className="flex gap-2 items-center">
               <div className="flex gap-2  flex-1 items-center px-5 py-4 bg-zinc-950 border border-zinc-800 rounded-lg">
-                <Mail className="text-zinc-400 size-5 shrink-0" />
+                <Calendar className="text-zinc-400 size-5 shrink-0" />
                 <input type="date" name="day" placeholder="Data e Horário da atividade" className="bg-transparent text-sm placeholder-zinc-400 outline-none w-full " />
               </div>
               <div className="flex gap-2 w-36 items-center px-5 py-4 bg-zinc-950 border border-zinc-800 rounded-lg">

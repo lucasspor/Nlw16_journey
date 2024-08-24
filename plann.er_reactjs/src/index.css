@@ -6,6 +6,10 @@
   min-width: 0;
 }
 
+input{
+  color-scheme: dark;
+}
+
 ::-webkit-calendar-picker-indicator {
   display: none;
   overflow: hidden;
