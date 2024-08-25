@@ -3,6 +3,7 @@ import { Button } from "../../../components/button";
 import { DateRange, DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { useState } from "react";
+import { format } from 'date-fns'
 
 interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
@@ -27,7 +28,7 @@ export function DestinationAndDateStep({
   }
 
 
-  const displayedDate = eventStartAndEnd ? 'Data' : null
+  const displayedDate = eventStartAndEnd && eventStartAndEnd.from  &&  eventStartAndEnd.to? format(eventStartAndEnd.from, "d 'de' LLL").concat(' até ').concat(format(eventStartAndEnd.to, "d 'de' LLL")) : null
 
 
 
@@ -37,9 +38,9 @@ export function DestinationAndDateStep({
         <MapPin className='size-5 text-zinc-400' />
         <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai" className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" />
       </div>
-      <button onClick={openDatePicker} disabled={isGuestsInputOpen} className='bg-transparent flex gap-2 items-center text-left'>
+      <button onClick={openDatePicker} disabled={isGuestsInputOpen} className='w-60 bg-transparent flex gap-2 items-center text-left'>
         <Calendar className='size-5 text-zinc-400' />
-        <span className="text-lg text-zinc-400 w-40">
+        <span className="flex-1 text-lg text-zinc-400 w-40">
           {displayedDate || 'Quando?'}
         </span>
       </button>
@@ -59,11 +60,10 @@ export function DestinationAndDateStep({
               selected={eventStartAndEnd}
               onSelect={setEventStartAndEnd}
               classNames={{
-                day: 'text-zinc-100 hover:bg-zinc-300 hover:rounded-full', 
-                selected: 'bg-lime-950 text-white', 
-                range_start: 'bg-yellow-600 text-white rounded-l-full', 
-                range_end: 'bg-red-500 text-white roundedfull', 
-                today: 'bg-yellow-400 rounded-r-full',
+                day: 'text-zinc-100 hover:bg-zinc-600 hover:rounded-full', 
+                selected: 'bg-lime-300 text-zinc-500 font-bold rounded-full', 
+                range_start: 'bg-yellow-300 text-white roundedfull', 
+                range_end: 'bg-red-500 text-white roundedful',
               }}
             />
           </div>
