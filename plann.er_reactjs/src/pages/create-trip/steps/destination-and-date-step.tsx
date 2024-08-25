@@ -9,15 +9,20 @@ interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
   closeGuestsInput: () => void
   openGuestsInput: () => void
+  setDestination: (destination: string) => void
+  setEventStartAndEndDates: (date: DateRange | undefined) => void
+  eventStartAndEndDates: DateRange | undefined
 }
 
 
 export function DestinationAndDateStep({
   isGuestsInputOpen,
   closeGuestsInput,
-  openGuestsInput }: DestinationAndDateStepProps) {
+  openGuestsInput,
+  setDestination,
+  setEventStartAndEndDates,
+  eventStartAndEndDates }: DestinationAndDateStepProps) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-  const [eventStartAndEnd, setEventStartAndEnd] = useState<DateRange | undefined>()
 
   function openDatePicker() {
     setIsDatePickerOpen(true)
@@ -28,7 +33,7 @@ export function DestinationAndDateStep({
   }
 
 
-  const displayedDate = eventStartAndEnd && eventStartAndEnd.from  &&  eventStartAndEnd.to? format(eventStartAndEnd.from, "d 'de' LLL").concat(' até ').concat(format(eventStartAndEnd.to, "d 'de' LLL")) : null
+  const displayedDate = eventStartAndEndDates && eventStartAndEndDates.from  &&  eventStartAndEndDates.to? format(eventStartAndEndDates.from, "d 'de' LLL").concat(' até ').concat(format(eventStartAndEndDates.to, "d 'de' LLL")) : null
 
 
 
@@ -36,7 +41,7 @@ export function DestinationAndDateStep({
     <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
       <div className='flex gap-2 items-center flex-1'>
         <MapPin className='size-5 text-zinc-400' />
-        <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai" className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" />
+        <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai" className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" onChange={event => setDestination(event.target.value)} />
       </div>
       <button onClick={openDatePicker} disabled={isGuestsInputOpen} className='w-60 bg-transparent flex gap-2 items-center text-left'>
         <Calendar className='size-5 text-zinc-400' />
@@ -57,8 +62,8 @@ export function DestinationAndDateStep({
             <div className="w-full h-px bg-zinc-800"></div>
             <DayPicker 
               mode="range"
-              selected={eventStartAndEnd}
-              onSelect={setEventStartAndEnd}
+              selected={eventStartAndEndDates}
+              onSelect={setEventStartAndEndDates}
               classNames={{
                 day: 'text-zinc-100 hover:bg-zinc-600 hover:rounded-full', 
                 selected: 'bg-lime-300 text-zinc-500 font-bold rounded-full', 

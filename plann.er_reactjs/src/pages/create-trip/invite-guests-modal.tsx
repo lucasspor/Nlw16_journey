@@ -6,7 +6,7 @@ interface InviteGuestsModalProps {
   closeGuestsModal: () => void
   emailsToInvite: string[]
   addNewEmailToInvite: (event: FormEvent<HTMLFormElement>) => void
-  removeEmailToInvite: (email: string) => void
+  removeEmailFromInvites: (email: string) => void
 }
 
 
@@ -14,7 +14,7 @@ export function InviteGuestsModal({
   addNewEmailToInvite,
   closeGuestsModal,
   emailsToInvite,
-  removeEmailToInvite }: InviteGuestsModalProps) {
+  removeEmailFromInvites }: InviteGuestsModalProps) {
   return (
     <div className='fixed bg-black/60 inset-0 flex items-center justify-center'>
       <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
@@ -31,7 +31,7 @@ export function InviteGuestsModal({
               <div key={email} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
                 <span className="text-zinc-300">{email}</span>
                 <button type="button">
-                  <X className="text-zinc-400 size-4" onClick={() => removeEmailToInvite(email)} />
+                  <X className="text-zinc-400 size-4" onClick={() => removeEmailFromInvites(email)} />
                 </button>
               </div>
             )
