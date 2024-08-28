@@ -5,7 +5,6 @@ interface InviteGuestsStepPros {
   openGuestsModal: () => void
   openConfirmTripModal: () => void
   emailsToInvite: string[]
-
 }
 
 export function InviteGuestsStep({ openGuestsModal, emailsToInvite, openConfirmTripModal }: InviteGuestsStepPros) {

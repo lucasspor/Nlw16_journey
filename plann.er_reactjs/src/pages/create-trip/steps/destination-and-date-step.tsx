@@ -33,7 +33,7 @@ export function DestinationAndDateStep({
   }
 
 
-  const displayedDate = eventStartAndEndDates && eventStartAndEndDates.from  &&  eventStartAndEndDates.to? format(eventStartAndEndDates.from, "d 'de' LLL").concat(' até ').concat(format(eventStartAndEndDates.to, "d 'de' LLL")) : null
+  const displayedDate = eventStartAndEndDates && eventStartAndEndDates.from  &&  eventStartAndEndDates.to? format(eventStartAndEndDates.from, "d LLL").concat(' até ').concat(format(eventStartAndEndDates.to, "d 'de' LLL")) : null
 
 
 
@@ -43,7 +43,7 @@ export function DestinationAndDateStep({
         <MapPin className='size-5 text-zinc-400' />
         <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai" className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1" onChange={event => setDestination(event.target.value)} />
       </div>
-      <button onClick={openDatePicker} disabled={isGuestsInputOpen} className='w-60 bg-transparent flex gap-2 items-center text-left'>
+      <button onClick={openDatePicker} disabled={isGuestsInputOpen} className='w-56 bg-transparent flex gap-2 items-center text-left'>
         <Calendar className='size-5 text-zinc-400' />
         <span className="flex-1 text-lg text-zinc-400 w-40">
           {displayedDate || 'Quando?'}
