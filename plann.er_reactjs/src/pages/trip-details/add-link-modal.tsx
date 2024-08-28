@@ -28,6 +28,7 @@ export function AddLinkModal({ closeAddLinkModal }: AddLinkModalProps) {
       url
     })
 
+    window.document.location.reload()
   }
   return (
     <div className='fixed bg-black/60 inset-0 flex items-center justify-center'>
