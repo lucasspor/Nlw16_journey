@@ -22,6 +22,7 @@ export function DestinationAndDate() {
     api.get(`/trips/${tripId}`).then(response => setTrip(response.data.trip))
   }, [tripId])
 
+
   const displayedDate = trip  ? format(trip.starts_at, "d 'de' LLL").concat(' até ').concat(format(trip.ends_at, "d 'de' LLL")) : null
 
 

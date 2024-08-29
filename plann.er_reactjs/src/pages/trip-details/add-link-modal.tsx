@@ -19,10 +19,6 @@ export function AddLinkModal({ closeAddLinkModal }: AddLinkModalProps) {
     const title = data.get('title')?.toString()
     const url = data.get('url')?.toString()
 
-
-    console.log(title)
-    console.log(url)
-
     api.post(`/trips/${tripId}/links`,{
       title, 
       url
@@ -48,8 +44,9 @@ export function AddLinkModal({ closeAddLinkModal }: AddLinkModalProps) {
             </div>
             <div className="flex gap-2  flex-1 items-center px-5 py-4 bg-zinc-950 border border-zinc-800 rounded-lg">
               <Link2 className="text-zinc-400 size-5 shrink-0" />
-              <input name="url" placeholder="URL" className="bg-transparent text-sm placeholder-zinc-400 outline-none w-full flex-1" />
+              <input type="url" name="url" placeholder="URL" className="bg-transparent text-sm placeholder-zinc-400 outline-none w-full flex-1" />
             </div>
+            
           </div>
 
           <Button size='full'>
