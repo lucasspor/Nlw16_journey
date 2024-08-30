@@ -24,21 +24,59 @@ export function DestinationAndDateStep({
   eventStartAndEndDates
 }: DestinationAndDateStepProps) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
-  const [place, setPlace] = useState<google.maps.places.PlaceResult | null>(null);
+  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+  const [place, setPlace] = useState<string>('');
+
+  function formatAddress(addressComponents: google.maps.GeocoderAddressComponent[]): string | null {
+    let city = '';
+    let state = '';
+    let country = '';
+  
+    addressComponents.forEach(component => {
+      const types = component.types;
+  
+      if (types.includes('locality') || types.includes('administrative_area_level_2')) {
+        city = component.long_name;
+      }
+  
+      if (types.includes('administrative_area_level_1')) {
+        state = component.short_name;
+      }
+  
+      if (types.includes('country')) {
+        country = component.long_name; 
+      }
+    });
+  
+    if (city && state && country) {
+      return `${city} - ${state}, ${country}`;
+    }
+  
+    return null;
+  }
 
   const onPlaceChanged = () => {
-    if(autocomplete !== null){
+    if (autocomplete) {
       const selectedPlace = autocomplete.getPlace();
-      setPlace(selectedPlace);
-      console.log(place)
+      if (selectedPlace.address_components) {
+        const formattedAddress = formatAddress(selectedPlace.address_components);
+        if (formattedAddress) {
+          setPlace(formattedAddress);
+          setDestination(formattedAddress);
+        }
+      }
     }
-  }
+  };
 
   const onLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
-    setAutocomplete(autocompleteInstance)
-  }
+    setAutocomplete(autocompleteInstance);
+  };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+     setPlace(event.target.value);
+     setDestination(event.target.value); 
+   };
+ 
   function openDatePicker() {
     setIsDatePickerOpen(true);
   }
@@ -47,7 +85,7 @@ export function DestinationAndDateStep({
     setIsDatePickerOpen(false);
   }
 
-  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   const displayedDate = eventStartAndEndDates && eventStartAndEndDates.from && eventStartAndEndDates.to
     ? format(eventStartAndEndDates.from, "d LLL").concat(' até ').concat(format(eventStartAndEndDates.to, "d 'de' LLL"))
@@ -55,16 +93,17 @@ export function DestinationAndDateStep({
 
   return (
     <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
-      <div className='flex gap-2 items-center flex-1'>
+      <div className='flex gap-1 items-center flex-1 truncate'>
         <MapPin className='size-5 text-zinc-400 shrink-0' />
         <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={['places']}>
-          <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged} className="truncate text-lg placeholder-zinc-400">
+          <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <input
               disabled={isGuestsInputOpen}
+              value={place}
               type="text"
               placeholder="Para onde você vai"
-              className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
-              onChange={event => setDestination(event.target.value)}
+              className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1 truncate"
+              onChange={handleInputChange}
             />
           </Autocomplete>
         </LoadScript>

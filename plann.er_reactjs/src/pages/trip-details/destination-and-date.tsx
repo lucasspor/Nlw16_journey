@@ -30,7 +30,7 @@ export function DestinationAndDate() {
     <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">
       <div className="flex items-center gap-2">
         <MapPin className="w-5 h-5 text-zinc-400" />
-        <span className="text-zinc-100">{trip?.destination}</span>
+        <span className="text-zinc-100 truncate">{trip?.destination}</span>
       </div>
       <div className="flex items-center gap-5">
         <div className="flex items-center gap-2">
