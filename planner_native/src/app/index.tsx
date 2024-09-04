@@ -1,6 +1,6 @@
 import { View, Text, Image, Linking, Keyboard, Alert } from "react-native"
 import { Input } from "@/components/input"
-import { ArrowRight, Calendar as IconCalendar, MapPin, Settings2, UserRoundPlus } from "lucide-react-native"
+import { ArrowRight, AtSign, Calendar as IconCalendar, MapPin, Settings2, UserRoundPlus } from "lucide-react-native"
 import { colors } from "@/styles/colors"
 import { Button } from "@/components/button"
 import { useState } from "react"
@@ -9,13 +9,15 @@ import { Calendar } from "@/components/calendar"
 import { calendarUtils, DatesSelected } from '@/utils/calendarUtils'
 import { DateData } from "react-native-calendars"
 import dayjs from "dayjs"
+import { GuestEmail } from "@/components/email"
+import { validateInput } from "@/utils/validateInput"
 
 enum StepForm {
   TRIP_DETAIlS = 1,
   ADD_EMAIL = 2,
 }
 
-enum MODAL{
+enum MODAL {
   NONE = 0,
   CALENDAR = 1,
   GUESTS = 2
@@ -24,18 +26,21 @@ enum MODAL{
 export default function Index() {
   const [stepForm, setStepForm] = useState(StepForm.TRIP_DETAIlS)
   //destinos
-  const[destination, setDestination] = useState("")
+  const [destination, setDestination] = useState("")
   //data
   const [selectedDates, setSelectedDates] = useState({} as DatesSelected)
   //modal
   const [showModal, setShowModal] = useState(MODAL.NONE)
+  //email
+  const [emailToInvite, setEmailToInvite] = useState("")
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
 
   function handleNextStepForm() {
-    if(destination.trim().length=== 0 || !selectedDates.startsAt || !selectedDates.endsAt){
+    if (destination.trim().length === 0 || !selectedDates.startsAt || !selectedDates.endsAt) {
       return Alert.alert("Preencha todos dos da viagem.")
     }
 
-    if(destination.length < 4){
+    if (destination.length < 4) {
       Alert.alert("O destino deve conter pelo mesno 4 caracteres")
     }
 
@@ -44,7 +49,7 @@ export default function Index() {
     }
   }
 
-  function handleSelectedDate (selectedDay: DateData){
+  function handleSelectedDate(selectedDay: DateData) {
     const dates = calendarUtils.orderStartsAtAndEndsAt({
       startsAt: selectedDates.startsAt,
       endsAt: selectedDates.endsAt,
@@ -52,6 +57,28 @@ export default function Index() {
     })
 
     setSelectedDates(dates)
+  }
+
+  function handleRemoveEmail(emailToRemove: string) {
+    setEmailsToInvite((prevState) =>
+      prevState.filter((email) => email !== emailToRemove))
+  }
+
+  function handleAddEmail() {
+    if (!validateInput.email(emailToInvite)) {
+      return Alert.alert("convidado", "E-mail inválido")
+    }
+
+    const emailAlreadyExist = emailsToInvite.find(
+      (email) => email === emailToInvite
+    )
+
+    if(emailAlreadyExist){
+      return Alert.alert("convidado", "E-mail Já foi adicionado")
+    }
+
+    setEmailsToInvite((prevState) => [...prevState, emailToInvite])
+    setEmailToInvite("")
   }
 
   return (
@@ -65,21 +92,21 @@ export default function Index() {
       <View className="w-full bg-zinc-900 p-4 rounded-xl my-8 border">
         <Input variant="primary">
           <MapPin size={20} color={colors.zinc[400]} />
-          <Input.Field 
-          placeholder="Para onde?" 
-          onChangeText={setDestination}
-          value={destination}
-          editable={stepForm === StepForm.TRIP_DETAIlS} />
+          <Input.Field
+            placeholder="Para onde?"
+            onChangeText={setDestination}
+            value={destination}
+            editable={stepForm === StepForm.TRIP_DETAIlS} />
         </Input>
         <Input variant="primary">
           <IconCalendar size={20} color={colors.zinc[400]} />
-          <Input.Field 
-          placeholder="Quando?" 
-          editable={stepForm === StepForm.TRIP_DETAIlS} 
-          onFocus={() => Keyboard.dismiss()}
-          showSoftInputOnFocus={false}
-          onPressIn={() => stepForm === StepForm.TRIP_DETAIlS && setShowModal(MODAL.CALENDAR)}
-          value={selectedDates.formatDatesInText}/>
+          <Input.Field
+            placeholder="Quando?"
+            editable={stepForm === StepForm.TRIP_DETAIlS}
+            onFocus={() => Keyboard.dismiss()}
+            showSoftInputOnFocus={false}
+            onPressIn={() => stepForm === StepForm.TRIP_DETAIlS && setShowModal(MODAL.CALENDAR)}
+            value={selectedDates.formatDatesInText} />
         </Input>
 
         {stepForm === StepForm.ADD_EMAIL &&
@@ -94,9 +121,18 @@ export default function Index() {
 
             <Input variant="primary">
               <UserRoundPlus size={20} color={colors.zinc[400]} />
-              <Input.Field 
-              placeholder="Quem estará na viagem?" 
-              onFocus={() => Keyboard.dismiss()}/>
+              <Input.Field
+                placeholder="Quem estará na viagem?"
+                onFocus={() => Keyboard.dismiss()} 
+                autoCorrect={false}
+                value={
+                  emailsToInvite.length > 0 ? `${emailsToInvite.length} pessoas(a) convidadas(s)` : ""
+                }
+                onPress={() => {
+                  Keyboard.dismiss()
+                  setShowModal(MODAL.GUESTS)
+                }}
+                showSoftInputOnFocus={false}/>
             </Input>
           </>
         }
@@ -118,28 +154,56 @@ export default function Index() {
         subtitle="Selecione a data de ida e volta"
         visible={showModal === MODAL.CALENDAR}
         onClose={() => setShowModal(MODAL.NONE)}>
-          <View className="gap-4 mt-4">
-            <Calendar
-              minDate={dayjs().toISOString()}
-              onDayPress={handleSelectedDate}
-              markedDates={selectedDates.dates}
-            />
-            <Button onPress={() => setShowModal(MODAL.NONE)}>
-              <Button.Title>
-                Confirmar
-              </Button.Title>
-            </Button>
+        <View className="gap-4 mt-4">
+          <Calendar
+            minDate={dayjs().toISOString()}
+            onDayPress={handleSelectedDate}
+            markedDates={selectedDates.dates}
+          />
+          <Button onPress={() => setShowModal(MODAL.NONE)}>
+            <Button.Title>
+              Confirmar
+            </Button.Title>
+          </Button>
 
-          </View>
+        </View>
       </Modal>
 
-      <Modal 
-      title="Selecionar Convidados" 
-      subtitle="Os convidados irão recever e-mails  para confirmar a participação na viagem"
-      visible={showModal === MODAL.GUESTS}
-      onClose={() => setShowModal(MODAL.NONE)}
-      > 
+      <Modal
+        title="Selecionar Convidados"
+        subtitle="Os convidados irão recever e-mails  para confirmar a participação na viagem"
+        visible={showModal === MODAL.GUESTS}
+        onClose={() => setShowModal(MODAL.NONE)}
+      >
+        <View className="my-2 flex-wrap gap-2 border-b border-zinc-800 py-5 items-start">
+          {
+            emailsToInvite.length > 0 ? (
+              emailsToInvite.map((email) => (
+                <GuestEmail key={email} email={email} onRemove={() => handleRemoveEmail(email)} />
+              ))
+            ) : (
+              <Text className="text-zinc-600 text-base font-regular">Nenhum e-mail adicionado.</Text>
+            )
+          }
 
+        </View>
+        <View className="gap-4 mt-4">
+          <Input variant="secondary">
+            <AtSign color={colors.zinc[400]} size={20} />
+            <Input.Field
+              placeholder="Digite o e-mail do convidado"
+              keyboardType="email-address"
+              onChangeText={(text) => setEmailToInvite(text.toLowerCase())}
+              value={emailToInvite} 
+              returnKeyType="send"
+              onSubmitEditing={handleAddEmail}/>
+          </Input>
+
+          <Button onPress={handleAddEmail}>
+            <Button.Title>Convidar</Button.Title>
+          </Button>
+
+        </View>
       </Modal>
     </View>
   )
