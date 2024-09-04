@@ -8,12 +8,12 @@ type Variants = "primary" | "secondary"
 
 type ButtonProps = TouchableOpacityProps & {
   variant?: Variants
-  isLoading: boolean
+  isLoading?: boolean
 }
 
 const ThemeContext = createContext<{variant?: Variants }>({})
 
-function Button({variant = "primary",children, isLoading,...rest}: ButtonProps){
+function Button({variant = "primary",children, isLoading = false,...rest}: ButtonProps){
   return <TouchableOpacity 
   className={clsx(
     "w-full h-11 flex-row items-center justify-center rounded-lg gap-2",
