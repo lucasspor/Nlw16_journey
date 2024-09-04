@@ -31,27 +31,27 @@ export function DestinationAndDateStep({
     let city = '';
     let state = '';
     let country = '';
-  
+
     addressComponents.forEach(component => {
       const types = component.types;
-  
+
       if (types.includes('locality') || types.includes('administrative_area_level_2')) {
         city = component.long_name;
       }
-  
+
       if (types.includes('administrative_area_level_1')) {
         state = component.short_name;
       }
-  
+
       if (types.includes('country')) {
-        country = component.long_name; 
+        country = component.long_name;
       }
     });
-  
+
     if (city && state && country) {
       return `${city} - ${state}, ${country}`;
     }
-  
+
     return null;
   }
 
@@ -73,10 +73,10 @@ export function DestinationAndDateStep({
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-     setPlace(event.target.value);
-     setDestination(event.target.value); 
-   };
- 
+    setPlace(event.target.value);
+    setDestination(event.target.value);
+  };
+
   function openDatePicker() {
     setIsDatePickerOpen(true);
   }

@@ -37,9 +37,8 @@ async function create({
       starts_at,
       ends_at,
       email_to_invite,
-      owner_email: "lucassp1112@outlook.com",
-      owner_name: "Lucas Silva Porto"
-    })
+      owner_email,
+      owner_name   })
 
     return data
 

@@ -1,6 +1,6 @@
 import { View, Text, Image, Linking, Keyboard, Alert } from "react-native"
 import { Input } from "@/components/input"
-import { ArrowRight, AtSign, Calendar as IconCalendar, MapPin, Settings2, UserRoundPlus } from "lucide-react-native"
+import { ArrowRight, AtSign, Calendar as IconCalendar, Mail, MapPin, Settings2, User, UserRoundPlus } from "lucide-react-native"
 import { colors } from "@/styles/colors"
 import { Button } from "@/components/button"
 import { useState } from "react"
@@ -20,7 +20,8 @@ enum StepForm {
 enum MODAL {
   NONE = 0,
   CALENDAR = 1,
-  GUESTS = 2
+  GUESTS = 2,
+  CONFIRM = 3
 }
 
 export default function Index() {
@@ -73,7 +74,7 @@ export default function Index() {
       (email) => email === emailToInvite
     )
 
-    if(emailAlreadyExist){
+    if (emailAlreadyExist) {
       return Alert.alert("convidado", "E-mail Já foi adicionado")
     }
 
@@ -81,6 +82,9 @@ export default function Index() {
     setEmailToInvite("")
   }
 
+  async function saveTrip(tripId: string) {
+
+  }
   return (
     <View className="flex-1 items-center justify-center px-5">
       <Image source={require("@/assets/logo.png")} className="h-11" resizeMode="contain" />
@@ -123,7 +127,7 @@ export default function Index() {
               <UserRoundPlus size={20} color={colors.zinc[400]} />
               <Input.Field
                 placeholder="Quem estará na viagem?"
-                onFocus={() => Keyboard.dismiss()} 
+                onFocus={() => Keyboard.dismiss()}
                 autoCorrect={false}
                 value={
                   emailsToInvite.length > 0 ? `${emailsToInvite.length} pessoas(a) convidadas(s)` : ""
@@ -132,15 +136,23 @@ export default function Index() {
                   Keyboard.dismiss()
                   setShowModal(MODAL.GUESTS)
                 }}
-                showSoftInputOnFocus={false}/>
+                showSoftInputOnFocus={false} />
             </Input>
           </>
         }
 
-        <Button onPress={handleNextStepForm} isLoading={false}>
-          <Button.Title>{
-            stepForm === StepForm.TRIP_DETAIlS ? "Continuar" : "Confirmar viagem"
-          }</Button.Title>
+        <Button
+          onPress={handleNextStepForm}
+          onPressIn={() => {
+            if (stepForm !== StepForm.TRIP_DETAIlS) {
+              setShowModal(MODAL.CONFIRM);
+            }
+          }}
+          isLoading={false}
+        >
+          <Button.Title>
+            {stepForm === StepForm.TRIP_DETAIlS ? "Continuar" : "Confirmar viagem"}
+          </Button.Title>
           <ArrowRight size={16} color={colors.lime[950]} />
         </Button>
       </View>
@@ -194,15 +206,38 @@ export default function Index() {
               placeholder="Digite o e-mail do convidado"
               keyboardType="email-address"
               onChangeText={(text) => setEmailToInvite(text.toLowerCase())}
-              value={emailToInvite} 
+              value={emailToInvite}
               returnKeyType="send"
-              onSubmitEditing={handleAddEmail}/>
+              onSubmitEditing={handleAddEmail} />
           </Input>
 
           <Button onPress={handleAddEmail}>
             <Button.Title>Convidar</Button.Title>
           </Button>
 
+        </View>
+      </Modal>
+      <Modal
+        title="Confirmar Viagem"
+        subtitle="Adicione o seu e-mail e nome para confirmar viagem"
+        visible={showModal === MODAL.CONFIRM}
+        onClose={() => setShowModal(MODAL.NONE)}
+      >
+        <View className="gap-4 mt-4">
+          <Input variant="secondary">
+            <User color={colors.zinc[400]} size={20} />
+            <Input.Field placeholder="Digite seu nome" />
+          </Input>
+          <Input variant="secondary">
+            <Mail color={colors.zinc[400]} size={20} />
+            <Input.Field
+              placeholder="Digite seu e-mail"
+              keyboardType="email-address" />
+          </Input>
+          <Button >
+            <Button.Title>Confirmar viagem </Button.Title>
+            <ArrowRight size={16} color={colors.lime[950]} />
+          </Button>
         </View>
       </Modal>
     </View>
